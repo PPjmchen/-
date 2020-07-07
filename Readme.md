@@ -2,10 +2,10 @@
 
 ## 所需第三方库
 
-2. tqdm：进度条插件
-3. selectivesearch：用于检测部分从原图获取一系列子窗口
-4. opencv-python：仅用于图像读取和基本处理（转灰度图、缩放、剪切等）
-5. jupyter：完整功能演示
+1. tqdm：进度条插件
+2. selectivesearch：用于检测部分从原图获取一系列子窗口
+3. opencv-python：仅用于图像读取和基本处理（转灰度图、缩放、剪切等）
+4. jupyter：完整功能演示
 
 ## 程序说明
 
