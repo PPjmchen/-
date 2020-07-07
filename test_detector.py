@@ -1,7 +1,6 @@
 import numpy as np
 import json
 import cv2
-import ipdb
 import pickle
 from Haar import harr
 from svm import SVM
@@ -62,6 +61,7 @@ def main():
         svm = pickle.loads(file.read())
 
     # 根据测试集的Haar特征对所有子窗口进行分类
+    print("testing......")
     result = svm.predict(haar_features)
 
     # 计算模型精度

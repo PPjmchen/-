@@ -1,5 +1,4 @@
 import json
-import ipdb
 from tools.get_rec_dataset import get_dataset
 from eigenface import Eigenface
 
@@ -36,14 +35,13 @@ def main():
     # 对训练集进行样本主成分分析，获取Eigenface
     eigenface.pca(train_imgs, class_train_imgs)
 
-    # 使用KNN对测试集进行识别
+    # 使用KNN对测试集进行识别，计算正确率
     err = 0
     for i in range(len(test_imgs)):
         predict_cls = eigenface.KNN_predicgt(test_imgs[i], train_cls)
         if predict_cls != test_cls[i]:
             err += 1
     score = 1 - err/len(test_cls)
-    ipdb.set_trace()
     print('score = ', score)
 
 if __name__ == '__main__':

@@ -1,16 +1,15 @@
 import numpy as np
-import ipdb
 
 class Eigenface():
     def __init__(self):
-        self.eigenfaces_matrix = None
-        self.variance = None
+        self.eigenfaces = None
+        self.var = None
         self.mean_image = None
 
     # 输入某一类人脸数据，得到其映射到eigenface空间
     def project_image(self, sub_dataset):
         sub_dataset = sub_dataset - self.mean_image
-        return np.dot(sub_dataset, self.eigenfaces_matrix.T)
+        return np.dot(sub_dataset, self.eigenfaces.T)
 
     def pca(self, train_set, class_train_set):
 
@@ -22,29 +21,26 @@ class Eigenface():
 
         # 计算所有样本与样本均值的差
         train_set = train_set - mean    # shape = (50, 10000)
-        # 当样本向量维度远大于样本数量时，使用compact trick
-        if dim > num:
-            # PCA 使用compact trick，得到数量与样本数一致的特征向量
-            covariance_matrix = np.dot(train_set, train_set.T)  # 50*50的协方差矩阵
 
-            eigen_value, eigen_vactor = np.linalg.eigh(covariance_matrix)
-            tmp = np.dot(train_set.T, eigen_vactor).T   # 利用compact trick计算原协方差矩阵特征向量
 
-            # 由于eigen_value为从小到大排序，因此将特征值与特征向量反转，得到最终的主成分（Eigenface）
-            V = tmp[::-1]
-            S = np.sqrt(eigen_value[::-1])
 
-            # 将特征向量化为单位特征向量
-            for i in range(V.shape[1]):
-                V[:, i] /= S
-        else:
-            # PCA - SVD used
-            U, S, V = np.linalg.svd(train_set)
-            V = V[:num]  # only makes sense to return the first num_data
+        # PCA 使用快速算法，得到数量与样本数一致的特征向量
+        covariance_matrix = np.dot(train_set, train_set.T)  # 50*50的协方差矩阵
+
+        eigen_value, eigen_vactor = np.linalg.eigh(covariance_matrix)
+        tmp = np.dot(train_set.T, eigen_vactor).T   # 利用compact trick计算原协方差矩阵特征向量
+
+        # 由于eigen_value为从小到大排序，因此将特征值与特征向量反转，得到最终的主成分（Eigenface）
+        V = tmp[::-1]
+        S = np.sqrt(eigen_value[::-1])
+
+        # 将特征向量化为单位特征向量
+        for i in range(V.shape[1]):
+            V[:, i] /= S
 
         # 将特征向量、特征值、训练集均值存于类变量，用于预测
-        self.eigenfaces_matrix = V  # 每个特征向量也称为一个Eigenface
-        self.variance = S
+        self.eigenfaces = V  # 每个特征向量也称为一个Eigenface
+        self.var = S
         self.mean_image = mean
 
         # 将每一类人脸子数据集映射到eigenface表示空间上

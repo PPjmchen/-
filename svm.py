@@ -1,6 +1,7 @@
-from tqdm import tqdm
 import numpy as np
+from tqdm import tqdm
 from tools.config import opt
+
 class SVM(object):
 
     def __init__(self, kernel='linear', epsilon=0.001, C=1, Max_Interation=opt.Max_Interation):

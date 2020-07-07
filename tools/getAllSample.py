@@ -1,34 +1,34 @@
 import json
 import cv2
 import random
+from iou import cal_iou
+from config import opt
 from SelectiveSearch import get_windows
-from tools.iou import cal_iou
-from tools.config import opt
 from tqdm import tqdm
 
 def get_samples(sub_dataset):
     # 对训练集中的每张图片采集正负样本
     samples = {}
     for img_path, label in tqdm(sub_dataset.items()):
-        img = cv2.imread(img_path)
-        bbox = label['bbox']
+        img = cv2.imread(img_path)  # 读取图片
+        bbox = label['bbox']        # 获取label
 
         if img.shape[2] == 1:
             img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
 
-        effectiveWindows = get_windows(img)
+        effectiveWindows = get_windows(img)     # 使用selective search提取一系列有效子窗口
 
         p_samples = []
         n_samples = []
         for w in effectiveWindows:
-            if cal_iou(w, bbox) > opt.iou_threshold:
+            # 若子窗口与ground truth的IoU超过阈值，判定为正样本，否则为负样本
+            if cal_iou(w, bbox) > opt.iou_threshold:    # iou_threshold = 0.4
                 p_samples.append(w)
             else:
                 n_samples.append(w)
 
         if len(n_samples) >= len(p_samples):
             n_samples = n_samples[:len(p_samples)]
-
         samples[img_path] = {'p_sample': p_samples, 'n_sample': n_samples}
     return samples
 

@@ -94,4 +94,4 @@ def get_dataset(dataset):
 
     train_imgs = np.array(train_imgs, dtype=np.uint8)
     test_imgs = np.array(test_imgs)
-    return train_imgs, class_train_imgs,train_cls, test_imgs, test_cls
+    return train_imgs, class_train_imgs, train_cls, test_imgs, test_cls
