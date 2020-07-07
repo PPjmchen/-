@@ -11,13 +11,13 @@
 
 **所有预设参数（人脸缩放尺寸、SVM训练迭代次数等）都存放于`tools/config.py`**
 
-1. 对原始数据集进行数据整理，保存结果于**`dataset.json`**
+1. 对原始数据集进行数据整理，保存结果于`dataset.json`
 
 ```bash
 python tools/data2json.py
 ```
 
-2. 从数据集中选取80%训练集和20%测试集，并生成检测任务所需的正负样本，保存于**`jsons/train_sample.json`**和**`jsons/test_sample.json`**
+2. 从数据集中选取80%训练集和20%测试集，并生成检测任务所需的正负样本，保存于`jsons/train_sample.json`和`jsons/test_sample.json`
 
 ```python
 python tools/getAllSample.py
