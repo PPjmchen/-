@@ -1,6 +1,5 @@
 import numpy as np
 from tools.config import opt
-import ipdb
 
 # 获取积分图
 def get_integral(img):
